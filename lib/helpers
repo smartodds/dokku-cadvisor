@@ -1,0 +1,71 @@
+# Helper functions that can be sourced via "." into the rest of the plugin
+
+DOKKU_CADVISOR_IMAGE="google/cadvisor:latest"
+DOKKU_CADVISOR_CONTAINER=dokku-cadvisor
+DOKKU_CADVISOR_DEFAULT_PORT=8080
+DOKKU_CADVISOR_PORT=${DOKKU_CADVISOR_PORT:-$DOKKU_CADVISOR_DEFAULT_PORT}
+
+f_check_container() {
+  local l_status
+
+  l_status="$(docker inspect -f '{{.State.Running}}' $DOKKU_CADVISOR_CONTAINER 2>/dev/null)" || l_status=none
+  printf "%s" "$l_status"
+}
+
+
+# Start the container
+f_dokku_cadvisor_start() {
+  case $(f_check_container) in
+    none)
+      echo "Starting cAdvisor on port ${DOKKU_CADVISOR_PORT} ..."
+      docker run \
+        --volume=/:/rootfs:ro \
+        --volume=/var/run:/var/run:rw \
+        --volume=/sys:/sys:ro \
+        --volume=/var/lib/docker/:/var/lib/docker:ro \
+        --publish=$DOKKU_CADVISOR_PORT:8080 \
+        --detach=true \
+        --name=$DOKKU_CADVISOR_CONTAINER \
+        $DOKKU_CADVISOR_IMAGE \
+        > /dev/null
+      ;;
+    false)
+      echo "Starting cAdvisor on port ${DOKKU_CADVISOR_PORT} ..."
+      docker start $DOKKU_CADVISOR_CONTAINER >/dev/null
+      ;;
+    *)
+      echo "cAdvisor is already running"
+      ;;
+  esac
+}
+
+
+# Stop the container
+f_dokku_cadvisor_stop() {
+  case $(f_check_container) in
+    true)
+      echo "Stopping cAdvisor ..."
+      docker stop $DOKKU_CADVISOR_CONTAINER >/dev/null                                                                                                              
+      ;;
+    *)  
+      echo "cAdvisor is not running"
+      ;;
+  esac
+}
+
+
+# Pull cAdvisor image
+f_dokku_cadvisor_install() {
+  docker pull $DOKKU_CADVISOR_IMAGE >/dev/null
+  case $(f_check_container) in
+    true)
+      f_dokku_cadvisor_stop
+      docker rm $DOKKU_CADVISOR_CONTAINER >/dev/null
+      f_dokku_cadvisor_start
+      ;;
+    false)
+      docker rm $DOKKU_CADVISOR_CONTAINER >/dev/null
+      ;;
+    *) ;;
+  esac
+}

@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
+
+PLUGIN_DIR=$(dirname $0)
+. "$PLUGIN_DIR/../common/functions"
+. "$PLUGIN_DIR/lib/helpers"
+
+case "$1" in
+  cadvisor:start)
+    f_dokku_cadvisor_start ;;
+
+  cadvisor:stop)
+    f_dokku_cadvisor_stop ;;
+
+  help | cadvisor:help)
+    cat && cat<<EOF
+    cadvisor:start                                  Start Google cAdvisor service
+    cadvisor:stop                                   Stop Google cAdvisor
+EOF
+    ;;  
+
+  *)
+    exit $DOKKU_NOT_IMPLEMENTED_EXIT
+    ;;
+esac
+
