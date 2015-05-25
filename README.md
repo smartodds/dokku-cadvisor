@@ -24,7 +24,7 @@ Options:
 
 ## Notes
 
-After the installation type the following to fire a ready-to-use a container of Google cAdvisor:
+After the installation type the following to fire a ready-to-use container of Google cAdvisor:
 ```
 dokku cadvisor:start
 ```
