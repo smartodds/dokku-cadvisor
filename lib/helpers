@@ -27,6 +27,7 @@ f_dokku_cadvisor_start() {
         --detach=true \
         --name=$DOKKU_CADVISOR_CONTAINER \
         $DOKKU_CADVISOR_IMAGE \
+        $DOKKU_CADVISOR_EXTRA_OPTS \
         > /dev/null
       ;;
     false)
