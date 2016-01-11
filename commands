@@ -77,6 +77,14 @@ f_dokku_cadvisor_install() {
 
 
 case "$1" in
+  cadvisor)
+    case $(f_check_container) in
+      true)
+        echo "cAdvisor is running on http://$(hostname -f):${DOKKU_CADVISOR_PORT}/" ;;
+      *)
+        echo "cAdvisor is not running" ;;
+    esac ;;
+
   cadvisor:start)
     f_dokku_cadvisor_start ;;
 
@@ -88,6 +96,7 @@ case "$1" in
 
   help | cadvisor:help)
     cat<<EOF
+    cadvisor, Show the status of cAdvisor
     cadvisor:start, Start Google cAdvisor service
     cadvisor:stop, Stop Google cAdvisor
 EOF
