@@ -1,6 +1,6 @@
 # Dokku cAdvisor
 
-[Google cAdvisor](https://github.com/google/cadvisor) plugin for [dokku](https://github.com/progrium/dokku)
+[Google cAdvisor](https://github.com/google/cadvisor) plugin for [dokku](https://github.com/progrium/dokku) >= 0.4.0
 
 Simple plugin that adds a `cadvisor` entry to the Dokku's menu to start/stop the service.
 
