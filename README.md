@@ -6,20 +6,18 @@ Simple plugin that adds a `cadvisor` entry to the Dokku's menu to start/stop the
 
 ## Installation
 
-On the Dokku server, install the plugin in the plugins directory and run `dokku plugins-install`:
-
+On the Dokku server run the following:
 ```
-cd /var/lib/dokku/plugins
-git clone https://github.com/alessio/dokku-cadvisor cadvisor
-dokku plugins-install
+sudo dokku plugin:install https://github.com/alessio/dokku-cadvisor
 ```
 
 ## Usage
 
 ```
 Options:
-    cadvisor:start              Start Google cAdvisor service
-    cadvisor:stop               Stop Google cAdvisor
+    cadvisor, Show the status of cAdvisor
+    cadvisor:start, Start Google cAdvisor service
+    cadvisor:stop, Stop Google cAdvisor
 ```
 
 ## Notes
