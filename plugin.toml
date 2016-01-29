@@ -1,4 +1,4 @@
 [plugin]
 description = "Dokku Google cAdvisor service plugin"
-version = "2.0.0"
+version = "2.0.1"
 [plugin.config]
